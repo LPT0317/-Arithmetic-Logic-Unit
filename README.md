@@ -13,3 +13,5 @@ ALU is used to do the actual computation for the current instruction. This compo
 ![alt text](image/ALU.jpg)
 
 The opcode of ALU is listed in the following table.
+
+![alt text](image/ALU_opcode.jpg)
