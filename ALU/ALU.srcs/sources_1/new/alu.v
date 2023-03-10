@@ -29,20 +29,26 @@ module alu(
     );
     
     reg [7:0] ALU_Result;
+    reg C;
+    wire Z, S, O;
     
     always @(*) begin
         case(opcode)
             //Arithmetic
             4'b0000:
-                ALU_Result = operand1 + operand2;
-            4'b0001:
+                {C, ALU_Result} = operand1 + operand2;
+            4'b0001: begin
                 ALU_Result = operand1 - operand2;
+                C = !ALU_Result[7];
+                end
             4'b0010:
                 ALU_Result = operand1;
             4'b0011:
-                ALU_Result = operand1 + 1;
-            4'b0100:
+                {C, ALU_Result} = operand1 + 1;
+            4'b0100: begin
                 ALU_Result = operand1 - 1;
+                C = !ALU_Result[7];
+                end
             //Logic
             4'b0101:
                 ALU_Result = operand1 & operand2;
@@ -71,4 +77,9 @@ module alu(
                 ALU_Result = 8'b0000_0000;
         endcase
     end
+    assign O = ALU_Result[7] ^ ALU_Result[6];
+    assign Z = (ALU_Result == 8'b0000_0000) ? 1'b1 : 1'b0;
+    assign S = ALU_Result[7];
+    assign flag = {Z, C, S, O};
+    assign alu_out = ALU_Result;
 endmodule
