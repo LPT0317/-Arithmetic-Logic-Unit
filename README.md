@@ -15,3 +15,6 @@ ALU is used to do the actual computation for the current instruction. This compo
 The opcode of ALU is listed in the following table.
 
 ![alt text](image/ALU_opcode.jpg)
+## Simulation
+Simulation waveform for the alarm clock is as follows: \
+![alt text](image/sim1.PNG)
