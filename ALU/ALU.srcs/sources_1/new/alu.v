@@ -72,8 +72,9 @@ module alu(
             default:
                 ALU_Result = 8'b1111_1111;
         endcase
-        if(opcode[3:2] == 0)
-            assign O = (operand1[7] ^ operand2[7]) ? 0 : (operand1[7] ^ ALU_Result[7]);
+        if(opcode[3:2] == 0)begin
+            O = (operand1[7] ^ operand2[7]) ? 0 : (operand1[7] ^ ALU_Result[7]);
+        end
         else begin
             C = 1'b0;
             O = 1'b0;

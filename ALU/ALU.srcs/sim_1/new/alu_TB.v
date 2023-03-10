@@ -54,5 +54,6 @@ module alu_TB();
         alu_opcode = alu_opcode + 4'b0001;
         #10;
       end;
+      $finish;
     end
 endmodule
