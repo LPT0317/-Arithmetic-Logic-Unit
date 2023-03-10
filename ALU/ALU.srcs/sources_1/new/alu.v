@@ -29,26 +29,22 @@ module alu(
     );
     
     reg [7:0] ALU_Result;
-    reg C;
-    wire Z, S, O;
+    reg O, C;
+    wire Z, S;
     
     always @(*) begin
         case(opcode)
             //Arithmetic
             4'b0000:
                 {C, ALU_Result} = operand1 + operand2;
-            4'b0001: begin
-                ALU_Result = operand1 - operand2;
-                C = !ALU_Result[7];
-                end
+            4'b0001:
+                {C, ALU_Result} = operand1 - operand2;
             4'b0010:
-                ALU_Result = operand1;
+                {C, ALU_Result} = operand1 + 1;                
             4'b0011:
-                {C, ALU_Result} = operand1 + 1;
-            4'b0100: begin
-                ALU_Result = operand1 - 1;
-                C = !ALU_Result[7];
-                end
+                {C, ALU_Result} = operand1 -1;
+            4'b0100:
+                ALU_Result = operand1;
             //Logic
             4'b0101:
                 ALU_Result = operand1 & operand2;
@@ -74,11 +70,16 @@ module alu(
             4'b1111:
                 ALU_Result = (operand1 >> operand2[2:0]) | (operand1 << (3'b111 - operand2[2:0]));
             default:
-                ALU_Result = 8'b0000_0000;
+                ALU_Result = 8'b1111_1111;
         endcase
+        if(opcode[3:2] == 0)
+            assign O = (operand1[7] ^ operand2[7]) ? 0 : (operand1[7] ^ ALU_Result[7]);
+        else begin
+            C = 1'b0;
+            O = 1'b0;
+        end
     end
-    assign O = ALU_Result[7] ^ ALU_Result[6];
-    assign Z = (ALU_Result == 8'b0000_0000) ? 1'b1 : 1'b0;
+    assign Z = (ALU_Result == 0) ? 1'b1 : 1'b0;
     assign S = ALU_Result[7];
     assign flag = {Z, C, S, O};
     assign alu_out = ALU_Result;

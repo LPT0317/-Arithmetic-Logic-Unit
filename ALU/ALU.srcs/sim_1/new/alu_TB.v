@@ -48,7 +48,7 @@ module alu_TB();
         A = 8'b0000_1010;
         B = 8'b0000_0010;
         
-        alu_opcode = 4'b0000;
+        alu_opcode = 4'b1111;
       
       for (i=0;i<=15;i=i+1) begin
         alu_opcode = alu_opcode + 4'b0001;
